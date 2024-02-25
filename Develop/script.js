@@ -10,7 +10,6 @@ console.log(today);// to check that the date is displayed correctly
 $('#currentDay').text(today);// sends the date information from today to html
  
 $(".saveBtn").on( "click",function saveBtn() {
-  
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener

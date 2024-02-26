@@ -64,7 +64,7 @@ function storeEvents() {
 $(".saveBtn").on( "click",function (event) {
   event.preventDefault();
 
-  let eventText = $(eventInput)val();
+  let eventText = $(eventInput).val();
    if (eventText === ""){
     return;
    }

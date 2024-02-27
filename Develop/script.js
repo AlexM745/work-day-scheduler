@@ -1,13 +1,21 @@
 // to wrap the whole functions to wait unitl the DOM elements are rendered first.
-$(document).ready (function(){
+
 //selected dom elements
   let  timeblock = $(".time-block");
-  let hourIds = $("#hour-9, #hour-10, #hour-11, #hour-12, #hour-13, #hour-14, #hour-15, #hour-16, #hour-17");
+  let hour9= $("#hour-9"); 
+  let hour10 = $("#hour-10");
+  let hour11 = $("#hour-11");
+  let hour12 = $("#hour-12");
+  let hour13 = $("#hour-13");
+  let hour14 = $("#hour-14");
+  let hour15 = $("#hour-15");
+  let hour16 = $("#hour-16");
+  let hour17 = $("#hour-17");
+  let blockhour = [ hour9,hour10,hour11,hour12,hour13,hour14,hour15,hour16, hour17,];
   let eventInput = $("input");
-  console.log(timeblock);
-  console.log( hourIds);
-  console.log(eventInput);
+  ;
   let events = [];
+  console.log("events", events);
 
   // displays current date on the top of the page in the header section
   const today = dayjs().format("dddd, MMMM D");// get current date and it formatted
@@ -18,15 +26,23 @@ $(document).ready (function(){
    function colorChange (){
     const currentHour = dayjs().format('HH:mm:ss A ');
     const currentHourParse = parseInt(currentHour);
-    console.log(currentHourParse);
+    console.log("current hour",currentHourParse);
     for (var i = 0; i < timeblock.length;i++){
-      if (currentHour < 9 ) {
+      var timeblockId = timeblock[i].id;
+       
+      if (timeblockId< currentHourParse ) {
         $(timeblock[i]).addClass("future");
+        $(timeblock[i]).removeClass("present");
+        $(timeblock[i]).removeClass("past");
 
-      }else if (currentHour > 17){
+      }else if (timeblockId > currentHourParse ){
         $(timeblock[i]).addClass("past");
+        $(timeblock[i]).removeClass("future");
+        $(timeblock[i]).removeClass("present");
       } else {
         $(timeblock[i]).addClass("present");
+        $(timeblock[i]).removeClass("past");
+        $(timeblock[i]).removeClass("future");
       }
     }
   };
@@ -34,13 +50,37 @@ $(document).ready (function(){
   colorChange();
 
 
-
-
-
 // TODO: This code should use the id in the containing time-block as a key to save the user input in local storage.HINT: What does `this` reference in the click listener
 // function? How can DOM traversal be used to get the "hour-x" id of the
 // time-block containing the button that was clicked? How might the id be
 // useful when saving the description in local storage?
+$(document).ready (function(){
+//save button click event and function
+$(".saveBtn").on( "click",function (event) {
+  event.preventDefault();
+console.log("this", this);
+  let eventText = $(eventInput).val();
+  let time = $(this).parent().attr("id");
+  console.log("event text", eventText);
+  console.log("time",time);
+   if (eventText === ""){
+    return;
+   }
+
+   events.push(eventText);
+   eventInput.value = "";
+  // storeEvents(); 
+  localStorage.setItem("events",JSON.stringify(events,time));
+  alert ("Clicked save button");
+});
+
+
+// store to local storage
+// function storeEvents() {
+//   // stringyfy and set in localstorage
+//   localStorage.setItem("events",JSON.stringify(events,time));
+  console.log("local storage", localStorage);
+// }
 
 // TODO: Add code to get any user input that was saved in localStorage and set
 // the values of the corresponding textarea elements. HINT: How can the id
@@ -49,32 +89,14 @@ $(document).ready (function(){
 // function to get the stored events from localstorage and is called at the bottom of the page.
 function getEvents() {
   let storedEvents = JSON.parse(localStorage.getItem("events"));
-
+  console.log("stored events", storedEvents);
   if (storedEvents !== null){
   events = storedEvents;
 }
 };
-// store to local storage
-function storeEvents() {
-  // stringyfy and set in localstorage
-  localStorage.setItem("events", JSON.stringify(events));
-}
 
-//save button click event and function
-$(".saveBtn").on( "click",function (event) {
-  event.preventDefault();
 
-  let eventText = $(eventInput).val();
-   if (eventText === ""){
-    return;
-   }
 
-   events.push(eventText);
-   eventInput.value = "";
-  storeEvents(); 
-
-  alert ("Clicked save button");
-});
 
 // calls getEvents to retrive data and render it to the page when loaded
 getEvents();

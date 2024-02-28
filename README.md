@@ -1,11 +1,11 @@
 #  Work Day Scheduler
 
 ## Description
-
+A word day scheduler to set task for the day. Changes colors dynamically depending on the time of day.
 ## Weblink
-
+https://alexm745.github.io/work-day-scheduler/
 ## Demonstration
-
+![alt text](./Assets/alexm745.github.io_work-day-scheduler_.png)
 
 ## User Story
 

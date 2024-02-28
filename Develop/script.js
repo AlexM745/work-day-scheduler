@@ -1,20 +1,7 @@
-// to wrap the whole functions to wait unitl the DOM elements are rendered first.
-
 //selected dom elements
 let timeblock = $(".time-block");
-let hour9 = $("#hour-9");
-let hour10 = $("#hour-10");
-let hour11 = $("#hour-11");
-let hour12 = $("#hour-12");
-let hour13 = $("#hour-13");
-let hour14 = $("#hour-14");
-let hour15 = $("#hour-15");
-let hour16 = $("#hour-16");
-let hour17 = $("#hour-17");
-let blockhour = [hour9, hour10, hour11, hour12, hour13, hour14, hour15, hour16, hour17,];
-let eventInput = $("input");
 let events = [];
-console.log("eventsInput", eventInput);
+
 
 // displays current date on the top of the page in the header section
 const today = dayjs().format("dddd, MMMM D");// get current date and it formatted
@@ -25,21 +12,22 @@ $('#currentDay').text(today);// sends the date information from today to html
 function colorChange() {
   const currentHour = dayjs().format('HH:mm:ss A ');
   const currentHourParse = parseInt(currentHour);
-  console.log("current hour", currentHourParse);
+  console.log("current hour", currentHourParse);// turns hour into number
+  // for loop to iterate through color changes with current time
   for (let i = 0; i < timeblock.length; i++) {
     var timeblockId = timeblock[i].id;
-
+    // if event is in the past color is grey
     if (timeblockId < currentHourParse) {
       $(timeblock[i]).addClass("past");
       $(timeblock[i]).removeClass("future");
       $(timeblock[i]).removeClass("present");
-
+      // if event is in the future color is green
     } else if (timeblockId > currentHourParse) {
       $(timeblock[i]).addClass("future");
       $(timeblock[i]).removeClass("past");
       $(timeblock[i]).removeClass("present");
     } else {
-      $(timeblock[i]).addClass("present");
+      $(timeblock[i]).addClass("present");// else event is in the present color is red
       $(timeblock[i]).removeClass("past");
       $(timeblock[i]).removeClass("future");
     }
@@ -48,37 +36,32 @@ function colorChange() {
 // helps render the color changes
 colorChange();
 
-
-3
+// to wrap the whole functions to wait unitl the DOM elements are rendered first.
 $(document).ready(function () {
 
 
   //save button click event and function
 
   $(".saveBtn").on("click", function (event) {
-    event.preventDefault();
-    console.log("this", this);
-    let eventText = $(this).siblings("input").val();
-    let time = $(this).parent().attr("id");
+    event.preventDefault();// keeps page from refreshing
+    console.log("this", this);// checking what this is
+    let eventText = $(this).siblings("input").val();// dom traversal using this
+    let time = $(this).parent().attr("id");// dom traversal
     console.log("event text", eventText);
     console.log("time", time);
     if (eventText === "") {
       return;
     }
+    // sends eventText and time to localstorage
+    storeEvents(eventText, time);
 
-    events.push(eventText);
-
-    eventInput.value = "";
-
-    storeEvents(eventText,time);
-
-    alert("Clicked save button");
+    alert("Event saved");
   });
 
 
   // store to local storage
-  function storeEvents(text,hour) {
-    //   // stringyfy and set in localstorage
+  function storeEvents(text, hour) {
+    // stringyfy and set in localstorage
     localStorage.setItem(hour, JSON.stringify(text));
     console.log("local storage", localStorage);
   }
@@ -86,11 +69,11 @@ $(document).ready(function () {
 
   // function to get the stored events from localstorage and is called at the bottom of the page.
   function getEvents() {
-    
-    for (let i = 9; i < 17; i++){
+    // for loop to keep and the values of local storage on to the input box after page reload
+    for (let i = 9; i < 17; i++) {
       const storageValue = JSON.parse(localStorage.getItem(i));
-      if ( storageValue !== null) {
-        $("#"+i).children("input").val(storageValue);
+      if (storageValue !== null) {
+        $("#" + i).children("input").val(storageValue);// dom traversal
       }
     }
   };

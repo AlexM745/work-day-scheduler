@@ -70,7 +70,7 @@ $(document).ready(function () {
   // function to get the stored events from localstorage and is called at the bottom of the page.
   function getEvents() {
     // for loop to keep and the values of local storage on to the input box after page reload
-    for (let i = 9; i < 17; i++) {
+    for (let i = 9; i < 18; i++) {
       const storageValue = JSON.parse(localStorage.getItem(i));
       if (storageValue !== null) {
         $("#" + i).children("input").val(storageValue);// dom traversal
